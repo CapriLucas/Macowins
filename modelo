@@ -1,0 +1,80 @@
+@startuml
+abstract Prenda{
+  precioBase
+  estadoPrenda
+  precio()
+}
+
+class Saco{
+  precio()
+}
+
+class Pantalon{
+  precio()
+}
+
+class Camisa{
+  precio()
+}
+
+Saco -|> Prenda
+Pantalon -|> Prenda
+Camisa -|> Prenda
+
+interface EstadoPrenda {
+  calcularPrecio(precioBase)
+}
+
+Prenda-> EstadoPrenda
+
+class EstadoNueva {
+  calcularPrecio(precioBase)
+}
+
+class EstadoPromocion {
+  descuento
+  calcularPrecio(precioBase)
+}
+
+class EstadoLiquidacion {
+  calcularPrecio(precioBase)
+}
+
+EstadoNueva -.|> EstadoPrenda
+EstadoPromocion -.|> EstadoPrenda
+EstadoLiquidacion -.|> EstadoPrenda
+
+class Item{
+  cantidad
+  Prenda prenda
+  precioTotal()
+}
+
+Item -> Prenda
+
+class Venta{
+  fecha
+  cantCuotas
+  MedioDePago medioDePago
+  Item[] items
+  precioFinal()
+}
+
+interface MedioDePago {
+  modificarPrecio(precioBase, cantCuotas)
+}
+
+class Efectivo {
+  modificarPrecio(precioBase, cantCuotas)
+}
+
+class Tarjeta {
+  modificarPrecio(precioBase, cantCuotas)
+}
+
+Venta -> Item
+Venta -> MedioDePago
+Efectivo -.|> MedioDePago
+Tarjeta -.|> MedioDePago
+
+@enduml
